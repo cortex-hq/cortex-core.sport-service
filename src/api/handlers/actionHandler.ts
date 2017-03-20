@@ -1,5 +1,6 @@
 import { ActionHandler, Action, DefaultActionHandler } from "vulcain-corejs";
-import { Game, InjuryReport } from '../models/models';
+import { Game, InjuryReport, Incident } from '../models/models';
+import { SeasonQueryHandler } from './queryHandler';
 
 // -----------------------------------------------------------
 // Default crud action handlers
@@ -8,8 +9,6 @@ import { Game, InjuryReport } from '../models/models';
 export class SportActionHandler extends DefaultActionHandler {
 
 }
-
-
 
 @ActionHandler({ async: false, scope: "?", schema: 'Season' })
 export class SeasonActionHandler extends DefaultActionHandler {
@@ -21,17 +20,29 @@ export class SeasonActionHandler extends DefaultActionHandler {
     async updateGame(game: Game) {
 
         const cmd = await this.requestContext.getCommandAsync("UpdateGameCommand", this.metadata.schema);
-        cmd.executeAsync(game);
+        await cmd.executeAsync(game);
         return 'echo';
     }
 
-//      @Action({ description: "Provides way to report an injury", outputSchema: "string" }) // action = method name (minus Async)
-//     async reportInjury(injuryReport: InjuryReport) {
+    @Action({ description: "Provides way to report an injury", outputSchema: "string" }) // action = method name (minus Async)
+    async reportInjury(injuryReport: InjuryReport) {
 
-// this.container.get<SeasonQueryHandler>('SeasonQueryService');
-// }
+        let handler = this.container.get<SeasonQueryHandler>('SeasonQueryService');
+        let season = await handler.getAsync(injuryReport.seasonId);
+        let game = season.games.find(g => g.id === injuryReport.gameId);
+        if (!game.incidents) {
+            game.incidents = [];
+        }
+        let incidentReportIndex = game.incidents.findIndex(i => i.id === injuryReport.id);
+        if (-1 === incidentReportIndex) {
+            game.incidents.push(injuryReport);
+        }
+        else {
+            game.incidents.splice(incidentReportIndex, 1, injuryReport); // TODO : It's stupid, many persons can be reported the same incident
+        }
 
-
+        return await this.updateAsync(season);
+    }
 }
 
 @ActionHandler({ async: false, scope: "?", schema: 'Team' })
