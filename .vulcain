@@ -4,20 +4,20 @@
     "mocks": {
         "services": {},
         "http": {
-            "http://localhost:8080/api/sport.create": {
-                "post": {
+            "http://localhost:8080/api/sport.all": {
+                "get": {
                     "output": {
-                        "body": {
+                        "body": [{
                             "id": "Sport1",
                             "label": "Rugby"
-                        }
+                        }]
                     }
                 }
             },
-            "http://localhost:8080/api/team.create": {
-                "post": {
+            "http://localhost:8080/api/team.all": {
+                "get": {
                     "output": {
-                        "body": {
+                        "body": [{
                             "id": "RugbyTop14Bayonne",
                             "sportId": "sport1",
                             "coach": {
@@ -42,15 +42,14 @@
                                     "number": 15
                                 }
                             ]
-                        }
+                        }]
                     }
                 }
             },
-            //http://www.lnr.fr/rugby-top-14/actualites-rugby-top-14/top-14-le-calendrier-de-la-saison-16-17
-            "http://localhost:8080/api/season.create": {
-                "post": {
+            "http://localhost:8080/api/season.all": {
+                "get": {
                     "output": {
-                        "body": {
+                        "body": [{
                             "id": "Top1420162017",
                             "sportId": "sport1",
                             "startDate": "2016-08-20",
@@ -73,7 +72,7 @@
                                     "awayTeamId": "RugbyTop14Bayonne"
                                 }
                             ]
-                        }
+                        }]
                     }
                 }
             }

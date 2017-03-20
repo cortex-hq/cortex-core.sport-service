@@ -4,7 +4,9 @@ import { Model, Property, Reference, Validator } from "vulcain-corejs";
 // -----------------------------------------------------------
 // Sport
 // -----------------------------------------------------------
-@Model({description: 'Can be a yellow card, red card, an injury'})
+
+
+@Model({ description: 'Can be a yellow card, red card, an injury' })
 export class Incident {
     @Property({ type: "string", required: true, unique: true, isKey: true })
     id: string;
@@ -14,6 +16,18 @@ export class Incident {
     minute: number;
     @Property({ type: "arrayOf", description: 'The list of protagonist ids', items: 'string', required: true })
     protagonists: string[];
+    @Property({ type: "string", description: 'The id of the user that has reported in first the incident', required: true })
+    createdBy: string;
+
+}
+
+@Model({ description: 'Injury', extends: 'Incident' })
+export class InjuryReport extends Incident {
+    @Property({ type: "string", required: true })
+    seasonId: string;
+
+    @Property({ type: "string", required: true })
+    gameId: string;
 }
 
 @Model()
@@ -22,6 +36,8 @@ export class Game {
     id: string;
     @Property({ type: "date-iso8601", required: true })
     date: string;
+    @Property({ type: "string", required: true }) // TODO : A second datamodel dedicated to update a game information (and require seasonId)
+    seasonId: string;
     @Property({ type: "string", required: true })  // TOO : Replace with GeoLoc.
     where: string;
     @Property({ type: "number", required: false })
@@ -75,13 +91,13 @@ export class Teammate {
     userId?: string;
 }
 
-@Model({extends: 'Teammate'})
+@Model({ extends: 'Teammate' })
 export class Player extends Teammate {
     @Property({ type: "number", description: "The position of the player, its jersey number.", required: true })
     number: number;
 }
 
-@Model({extends: 'Teammate'})
+@Model({ extends: 'Teammate' })
 export class Coach extends Teammate {
 }
 

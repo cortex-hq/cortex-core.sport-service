@@ -12,7 +12,7 @@ export class SportQueryHandler extends DefaultQueryHandler<Sport> {
 export class TeamQueryHandler extends DefaultQueryHandler<Team> {
 }
 
-@QueryHandler({ scope: "?", schema: "Season" })
+@QueryHandler({ scope: "?", schema: "Season", serviceName : "SeasonQueryService" })
 export class SeasonQueryHandler extends DefaultQueryHandler<Season> {
 }
 
