@@ -1,9 +1,82 @@
 {
-   "mode": "local",
-   "alias": {
-   },
-   "mocks": {
-    "services": {},
-    "http": {}
-   }
+    "mode": "local",
+    "alias": {},
+    "mocks": {
+        "services": {},
+        "http": {
+            "http://localhost:8080/api/sport.create": {
+                "post": {
+                    "output": {
+                        "body": {
+                            "id": "Sport1",
+                            "label": "Rugby"
+                        }
+                    }
+                }
+            },
+            "http://localhost:8080/api/team.create": {
+                "post": {
+                    "output": {
+                        "body": {
+                            "id": "RugbyTop14Bayonne",
+                            "sportId": "sport1",
+                            "coach": {
+                                "id": "BayonneVincentEtcheto",
+                                "firstName": "Vincent",
+                                "lastName": "Etcheto",
+                                "teamId": "RugbyTop14Bayonne"
+                            },
+                            "players": [
+                                {
+                                    "id": "BayonneBenjaminThiery",
+                                    "firstName": "Benjamin",
+                                    "lastName": "Thiery",
+                                    "teamId": "RugbyTop14Bayonne",
+                                    "number": 15
+                                },
+                                {
+                                    "id": "BayonneMartinBustosMoyano",
+                                    "firstName": "Martin",
+                                    "lastName": "Bustos Moyano",
+                                    "teamId": "RugbyTop14Bayonne",
+                                    "number": 15
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            //http://www.lnr.fr/rugby-top-14/actualites-rugby-top-14/top-14-le-calendrier-de-la-saison-16-17
+            "http://localhost:8080/api/season.create": {
+                "post": {
+                    "output": {
+                        "body": {
+                            "id": "Top1420162017",
+                            "sportId": "sport1",
+                            "startDate": "2016-08-20",
+                            "endDate": "2017-06-04",
+                            "games": [
+                                {
+                                    "id": "BayonneToulon",
+                                    "date": "2016-08-20",
+                                    "where": "Bayonne",
+                                    "played": false,
+                                    "homeTeamId": "RugbyTop14Bayonne",
+                                    "awayTeamId": "RugbyTop14Toulon"
+                                },
+                                {
+                                    "id": "ToulonBayonne",
+                                    "date": "2017-03-11",
+                                    "where": "Toulon",
+                                    "played": false,
+                                    "homeTeamId": "RugbyTop14Toulon",
+                                    "awayTeamId": "RugbyTop14Bayonne"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
